@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ramayan Gallery</title>
+</head>
+
+<body>
+
+<div id="gallery"></div>
+
+
+<script>
+fetch("https://api.allorigins.win/raw?url=https://ibb.co/album/przHmY")
+.then(response => response.text())
+.then(html => {
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    const images = doc.querySelectorAll("img");
+    const gallery = document.getElementById("gallery");
+
+    images.forEach(img => {
+
+        const src = img.src;
+
+        // Only show actual album images
+        if(src.includes("i.ibb.co")){
+            const newImg = document.createElement("img");
+            newImg.src = src;
+            newImg.style.width="250px";
+            newImg.style.margin="5px";
+            gallery.appendChild(newImg);
+        }
+
+    });
+
+});
+</script>
+
+
+</body>
+</html>
