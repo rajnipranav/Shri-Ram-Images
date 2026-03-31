@@ -9,31 +9,42 @@
 <div id="gallery"></div>
 
 
+<div id="gallery"></div>
+
 <script>
-fetch("https://api.allorigins.win/raw?url=https://ibb.co/album/przHmY")
+const albumPages = [
+"https://ibb.co/album/przHmY?page=1",
+"https://ibb.co/album/przHmY?page=2",
+"https://ibb.co/album/przHmY?page=3",
+"https://ibb.co/album/przHmY?page=4"
+];
+
+const gallery = document.getElementById("gallery");
+
+albumPages.forEach(url => {
+
+fetch("https://api.allorigins.win/raw?url=" + url)
 .then(response => response.text())
 .then(html => {
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
+const parser = new DOMParser();
+const doc = parser.parseFromString(html, "text/html");
 
-    const images = doc.querySelectorAll("img");
-    const gallery = document.getElementById("gallery");
+const images = doc.querySelectorAll("img");
 
-    images.forEach(img => {
+images.forEach(img => {
 
-        const src = img.src;
+if(img.src.includes("i.ibb.co")){
+const newImg = document.createElement("img");
+newImg.src = img.src;
+newImg.style.width="250px";
+newImg.style.margin="5px";
+gallery.appendChild(newImg);
+}
 
-        // Only show actual album images
-        if(src.includes("i.ibb.co")){
-            const newImg = document.createElement("img");
-            newImg.src = src;
-            newImg.style.width="250px";
-            newImg.style.margin="5px";
-            gallery.appendChild(newImg);
-        }
+});
 
-    });
+});
 
 });
 </script>
